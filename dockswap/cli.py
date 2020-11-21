@@ -16,7 +16,7 @@ from dockswap import Composer, DockSwapRepo
 from errors import DockSwapError
 
 
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 MAJOR, MINOR, PATCH = VERSION.split(".")
 
 app = typer.Typer(help="DockSwap. Tool for swapping projects.")
