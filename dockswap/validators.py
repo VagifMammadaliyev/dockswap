@@ -31,7 +31,6 @@ def validate_project_name(repo, name: str):
     """
     if repo.get(name):
         raise DockSwapError(
-            'Composer for project "{name}" is already registered. Consider removing it first'.format(
-                name=name
-            )
+            'Composer for project "{name}" is already registered.'
+            " Consider removing it first".format(name=name)
         )

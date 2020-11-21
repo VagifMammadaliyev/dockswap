@@ -31,7 +31,9 @@ class Composer(object):
 
         self.docker_compose_path = str(docker_compose_path)
         self.env_path = str(env_path) if env_path else None
-        self.binary_name = docker_compose_cli_env if not binary_name else binary_name
+        self.binary_name = (
+            docker_compose_cli_env if not binary_name else binary_name
+        )
         self.project_name = project_name
 
     def start(self, dry: Optional[bool] = False):
@@ -48,7 +50,9 @@ class Composer(object):
         if result.returncode != 0:
             self.fail(command, result.returncode)
 
-    def stop(self, remove: Optional[bool] = False, dry: Optional[bool] = False):
+    def stop(
+        self, remove: Optional[bool] = False, dry: Optional[bool] = False
+    ):
         """
         Stop containers for this composer.
         If `dry` is `True`, then just return command to be executed.
@@ -64,7 +68,9 @@ class Composer(object):
 
     def fail(self, command: str, returncode: int):
         raise DockSwapError(
-            'Command "{}" exited with status code {}'.format(command, returncode)
+            'Command "{}" exited with status code {}'.format(
+                command, returncode
+            )
         )
 
     def get_env_option(self):
@@ -77,16 +83,20 @@ class Composer(object):
 
     def construct_command(self, action: Action) -> str:
         """Contruct command to be executed depending of `action`"""
-        env_part = self.get_env_option() if action == Composer.Action.START else ""
+        env_part = (
+            self.get_env_option() if action == Composer.Action.START else ""
+        )
         file_part = self.get_file_option()
         detached_part = "-d" if action == Composer.Action.START else ""
-        command = "{dc_bin} {env_part} {file_part} {action} {detached_part}".format(
-            dc_bin=self.binary_name,
-            env_part=env_part,
-            file_part=file_part,
-            action=action.value,
-            detached_part=detached_part,
-        ).strip()
+        command = (
+            "{dc_bin} {env_part} {file_part} {action} {detached_part}".format(
+                dc_bin=self.binary_name,
+                env_part=env_part,
+                file_part=file_part,
+                action=action.value,
+                detached_part=detached_part,
+            ).strip()
+        )
         return " ".join(command.split())  # justify the command
 
     def __str__(self):
@@ -128,7 +138,9 @@ class DockSwapRepo(object):
 
     @classmethod
     def prune(cls):
-        storage_path = Path.home() / Path(cls.DOCKSWAP_DIR) / Path(cls.STORAGE_PATH)
+        storage_path = (
+            Path.home() / Path(cls.DOCKSWAP_DIR) / Path(cls.STORAGE_PATH)
+        )
         storage_path.unlink()
 
     def __init__(self):
@@ -191,7 +203,9 @@ class DockSwapRepo(object):
 
     def delete(self, project_name: str) -> bool:
         composers = self.get_all()
-        nice_composers = [c for c in composers if c.project_name != project_name]
+        nice_composers = [
+            c for c in composers if c.project_name != project_name
+        ]
         deleted = len(composers) != len(nice_composers)
         self.persist_all(nice_composers, rewrite=True)
         return deleted

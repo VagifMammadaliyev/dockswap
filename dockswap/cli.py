@@ -27,8 +27,12 @@ docker_compose_path_help = (
 env_path_help = (
     "If your docker-compose file uses env_file then specify path for that file"
 )
-dry_option = typer.Option(False, help="Do not run command, instead just print it")
-remove_option = typer.Option(False, help="Stop and remove already running containers")
+dry_option = typer.Option(
+    False, help="Do not run command, instead just print it"
+)
+remove_option = typer.Option(
+    False, help="Stop and remove already running containers"
+)
 
 repo = DockSwapRepo()
 
@@ -53,7 +57,9 @@ def version(
         if mini:
             typer.echo(VERSION)
         else:
-            typer.echo("DockSwapping projects with v{version}".format(version=VERSION))
+            typer.echo(
+                "DockSwapping projects with v{version}".format(version=VERSION)
+            )
     else:
         if part == VersionPart.MAJOR:
             typer.echo(MAJOR)
@@ -79,7 +85,9 @@ def add(
     )
     repo.persist(composer)
     typer.secho(
-        'Successfully registered composer for project "{}"'.format(project_name),
+        'Successfully registered composer for project "{}"'.format(
+            project_name
+        ),
         fg=typer.colors.GREEN,
     )
 
@@ -95,7 +103,9 @@ def delete(project_name: str):
     deleted = repo.delete(project_name)
     if deleted:
         typer.secho(
-            'Successfully removed "{}" from registered composers'.format(project_name),
+            'Successfully removed "{}" from registered composers'.format(
+                project_name
+            ),
             fg=typer.colors.GREEN,
         )
     else:
@@ -107,7 +117,9 @@ def delete(project_name: str):
         )
 
 
-def stop_other_containers(remove: Optional[bool] = False, dry: Optional[bool] = False):
+def stop_other_containers(
+    remove: Optional[bool] = False, dry: Optional[bool] = False
+):
     docker_bin = os.environ.get("DOCKSWAP_DOCKER_CLI", "docker")
     list_all_containers_command = "{} ps -aq".format(docker_bin)
     list_all_containers = subprocess.getoutput(list_all_containers_command)
@@ -196,7 +208,9 @@ def stop(
 
 
 @app.command()
-def stopall(dry: Optional[bool] = dry_option, remove: Optional[bool] = remove_option):
+def stopall(
+    dry: Optional[bool] = dry_option, remove: Optional[bool] = remove_option
+):
     command = stop_other_containers(remove=remove, dry=dry)
     if dry:
         typer.echo(command)
@@ -211,17 +225,21 @@ def stopall(dry: Optional[bool] = dry_option, remove: Optional[bool] = remove_op
 
 @app.command()
 def prune(
-    no_input: Optional[bool] = typer.Option(False, help="do not ask for confirmation")
-):
-    success = lambda: typer.secho(
-        "Pruned all registered composers", fg=typer.colors.GREEN
+    no_input: Optional[bool] = typer.Option(
+        False, help="do not ask for confirmation"
     )
+):
+    def success():
+        typer.secho("Pruned all registered composers", fg=typer.colors.GREEN)
+
     if no_input:
         DockSwapRepo.prune()
         success()
         return
 
-    prune_yes = typer.confirm("Are you sure to prune all your registered composers?")
+    prune_yes = typer.confirm(
+        "Are you sure to prune all your registered composers?"
+    )
 
     if prune_yes:
         DockSwapRepo.prune()
