@@ -17,47 +17,30 @@ Report Bugs
 
 Report bugs at https://github.com/VagifMammadaliyev/dockswap/issues.
 
-If you are reporting a bug, please include:
+If you are reporting a bug, please try to use provided issue template. Also keep in mind that `dockswap`
+was initially written for my own needs. Some commands of `dockswap` may not support the version
+of `docker` or `docker-compose` you use. So please try to identify source of a problem and if you think
+the problem is version incompatability then feel free to propose a **feature**.
 
-* Your operating system name and version.
-* Any details about your local setup that might be helpful in troubleshooting.
-* Detailed steps to reproduce the bug.
-
-Fix Bugs
-~~~~~~~~
-
-Look through the GitHub issues for bugs. Anything tagged with "bug" and "help
-wanted" is open to whoever wants to implement it.
-
-Implement Features
-~~~~~~~~~~~~~~~~~~
-
-Look through the GitHub issues for features. Anything tagged with "enhancement"
-and "help wanted" is open to whoever wants to implement it.
-
-Write Documentation
-~~~~~~~~~~~~~~~~~~~
-
-DockSwap could always use more documentation, whether as part of the
-official DockSwap docs, in docstrings, or even on the web in blog posts,
-articles, and such.
+Note: If the version of `docker` or `docker-compose` on your system matches the one specified in `dockswap`
+docs then issue a bug instead.
 
 Submit Feedback
 ~~~~~~~~~~~~~~~
 
 The best way to send feedback is to file an issue at https://github.com/VagifMammadaliyev/dockswap/issues.
 
-If you are proposing a feature:
+If you are proposing a feature please make sure you describe it in details and keep in mind
+that I am busy almost all of the time. You are free to implement it yourself or involve other contributors.
 
-* Explain in detail how it would work.
-* Keep the scope as narrow as possible, to make it easier to implement.
-* Remember that this is a volunteer-driven project, and that contributions
-  are welcome :)
+Fixing bugs or implementing a feature
+~~~~~~~~~~~~~~~
 
-Get Started!
-------------
+If you think you can help `dockswap` work better and support more versions of dependent tools (`docker` for example),
+then you are free to contribute. :)
 
-Ready to contribute? Here's how to set up `dockswap` for local development.
+
+To set up a working environment:
 
 1. Fork the `dockswap` repo on GitHub.
 2. Clone your fork locally::
@@ -72,9 +55,11 @@ Ready to contribute? Here's how to set up `dockswap` for local development.
 
 4. Create a branch for local development::
 
-    $ git checkout -b name-of-your-bugfix-or-feature
+    $ git checkout -b new/1-supporting-old-docker-compose  # for new features or...
+    $ git checkout -b bug/2-windows-xp-crash               # for bug fixes or...
+    $ get checkout -b fix/3-better-docs                    # for improvements of existing functionality
 
-   Now you can make your changes locally.
+    Please make sure to use provided branch naming convention: `{type}/{issue_number}-{short-description}`
 
 5. When you're done making changes, check that your changes pass flake8 and the
    tests, including testing other Python versions with tox::
@@ -83,13 +68,15 @@ Ready to contribute? Here's how to set up `dockswap` for local development.
     $ python setup.py test or pytest
     $ tox
 
-   To get flake8 and tox, just pip install them into your virtualenv.
+   To get dev dependecies use `pip install -r requirements_dev.txt`
 
 6. Commit your changes and push your branch to GitHub::
 
     $ git add .
-    $ git commit -m "Your detailed description of your changes."
-    $ git push origin name-of-your-bugfix-or-feature
+    $ git commit -m 'Provide a short description'
+    $ git push origin new/1-supporting-old-docker-compose
+
+    Or just `git commit` (without `-m` part) to provide more details about commit
 
 7. Submit a pull request through the GitHub website.
 
@@ -98,21 +85,12 @@ Pull Request Guidelines
 
 Before you submit a pull request, check that it meets these guidelines:
 
-1. The pull request should include tests.
-2. If the pull request adds functionality, the docs should be updated. Put
-   your new functionality into a function with a docstring, and add the
-   feature to the list in README.rst.
-3. The pull request should work for Python 3.5, 3.6, 3.7 and 3.8, and for PyPy. Check
+1. The pull request should include tests if necessary.
+2. If the pull request should update docs if necessary and may not update docs
+   only in exceptional cases and if `dockswap --help` is enough.
+3. The pull request should work for Python 3.6, 3.7 and 3.8. Check
    https://travis-ci.com/VagifMammadaliyev/dockswap/pull_requests
    and make sure that the tests pass for all supported Python versions.
-
-Tips
-----
-
-To run a subset of tests::
-
-$ pytest tests.test_dockswap
-
 
 Deploying
 ---------
