@@ -3,7 +3,6 @@ python:
   - 3.8
   - 3.7
   - 3.6
-  - 3.5
 
 install: pip install -U tox-travis
 
@@ -19,7 +18,8 @@ deploy:
   distributions: sdist bdist_wheel
   username: '__token__'
   password: $TEST_PYPI_TOKEN
-  skip_existing: true
+  skip_existing: false
+  server: $PYPI_SERVER
   on:
     branch: staging
     repo: VagifMammadaliyev/dockswap
