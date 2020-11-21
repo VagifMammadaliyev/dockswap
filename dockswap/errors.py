@@ -1,0 +1,2 @@
+class DockSwapError(Exception):
+    pass
