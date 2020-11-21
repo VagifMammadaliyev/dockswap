@@ -7,17 +7,13 @@ from pathlib import Path
 from enum import Enum
 
 import typer
-from dockswap.validators import (
+from .dockswap.validators import (
     validate_docker_compose_path,
     validate_path,
     validate_project_name,
 )
-from dockswap.dockswap import Composer, DockSwapRepo
-from dockswap.errors import DockSwapError
-
-__author__ = "Vagif Mammadaliyev"
-__email__ = "vagifmammadaliyev@outlook.com"
-__version__ = "0.1.0"
+from .dockswap.dockswap import Composer, DockSwapRepo
+from .dockswap.errors import DockSwapError
 
 VERSION = "0.1.1"
 MAJOR, MINOR, PATCH = VERSION.split(".")

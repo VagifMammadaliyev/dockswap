@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from dockswap.errors import DockSwapError
+from .errors import DockSwapError
 
 
 def validate_path(path: Path):
