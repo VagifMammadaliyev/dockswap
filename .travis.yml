@@ -20,6 +20,7 @@ deploy:
   password: $TEST_PYPI_TOKEN
   skip_existing: false
   server: $PYPI_SERVER
+  skip_cleanup: false
   on:
     branch: staging
     repo: VagifMammadaliyev/dockswap
