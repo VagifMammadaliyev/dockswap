@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from errors import DockSwapError
+from dockswap.errors import DockSwapError
 
 
 def validate_path(path: Path):
@@ -22,7 +22,9 @@ def validate_docker_compose_path(path: Path):
 
     # TODO: Add better validation here
     if path.suffix.lstrip(".") not in ["yml", "json"]:
-        raise DockSwapError('"{path}" is not a valid YAML/JSON path'.format(path=path))
+        raise DockSwapError(
+            '"{path}" is not a valid YAML/JSON path'.format(path=path)
+        )
 
 
 def validate_project_name(repo, name: str):
