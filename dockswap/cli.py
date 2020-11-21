@@ -19,7 +19,7 @@ __author__ = "Vagif Mammadaliyev"
 __email__ = "vagifmammadaliyev@outlook.com"
 __version__ = "0.1.0"
 
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 MAJOR, MINOR, PATCH = VERSION.split(".")
 
 app = typer.Typer(help="DockSwap. Tool for swapping projects.")
