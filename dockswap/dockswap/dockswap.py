@@ -5,7 +5,7 @@ from typing import Dict, Any, Optional, List, Union
 from pathlib import Path
 from enum import Enum
 
-from errors import DockSwapError
+from .errors import DockSwapError
 
 
 class Composer(object):
