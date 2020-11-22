@@ -15,7 +15,7 @@ from .dockswap.validators import (
 from .dockswap.core import Composer, DockSwapRepo
 from .dockswap.errors import DockSwapError
 
-VERSION = "0.2.0"
+VERSION = "0.2.1"
 MAJOR, MINOR, PATCH = VERSION.split(".")
 
 app = typer.Typer(help="DockSwap. Tool for swapping projects.")
