@@ -12,7 +12,7 @@ from .dockswap.validators import (
     validate_path,
     validate_project_name,
 )
-from .dockswap.dockswap import Composer, DockSwapRepo
+from .dockswap.core import Composer, DockSwapRepo
 from .dockswap.errors import DockSwapError
 
 VERSION = "0.1.2"
