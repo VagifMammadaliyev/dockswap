@@ -8,13 +8,10 @@ with open("README.rst", "r") as readme_file:
 with open("requirements.txt", "r") as reqs_file:
     requirements = reqs_file.readlines()
 
-setup_requirements = [
-    "pytest-runner",
-]
+with open("requirements_dev.txt", "r") as reqs_dev_file:
+    test_requirements = reqs_dev_file.readlines()
 
-test_requirements = [
-    "pytest>=3",
-]
+setup_requirements = ["pytest-runner"]
 
 setup(
     author="Vagif Mammadaliyev",

@@ -134,7 +134,7 @@ class Composer(object):
 
 class DockSwapRepo(object):
     DOCKSWAP_DIR = ".dockswap"
-    STORAGE_PATH = "storage.json"
+    STORAGE_PATH = os.environ.get("DOCKSWAP_STORAGE_FILE_NAME", "storage.json")
 
     @classmethod
     def prune(cls):
@@ -165,7 +165,7 @@ class DockSwapRepo(object):
 
             return self._loaded_data
 
-        return self.loaded_data
+        return self._loaded_data
 
     def commit(self, data: List[Dict[str, str]]):
         with open(self.storage_path, "w") as storage_file:

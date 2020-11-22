@@ -1,6 +1,6 @@
 import os
-import sys
 import subprocess
+import functools
 
 from typing import Optional
 from pathlib import Path
@@ -40,6 +40,20 @@ class VersionPart(Enum):
     PATCH = "patch"
 
 
+def handle_error(func):
+    """Handle DockSwapError and output a nice message :)"""
+
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except DockSwapError as dockswap_err:
+            typer.secho(str(dockswap_err), fg=typer.colors.RED, err=True)
+            raise typer.Exit(code=1)
+
+    return wrapped
+
+
 @app.command()
 def version(
     part: Optional[VersionPart] = typer.Option(
@@ -67,6 +81,7 @@ def version(
 
 
 @app.command()
+@handle_error
 def add(
     project_name: str,
     path: Path = typer.Option(..., help=docker_compose_path_help),
@@ -165,6 +180,7 @@ def stop_other_containers(
 
 
 @app.command()
+@handle_error
 def start(
     project_name: str,
     remove_other: Optional[bool] = remove_option,
@@ -190,6 +206,7 @@ def start(
 
 
 @app.command()
+@handle_error
 def stop(
     project_name: str,
     remove_other: Optional[bool] = remove_option,
@@ -215,6 +232,7 @@ def stop(
 
 
 @app.command()
+@handle_error
 def stopall(
     dry: Optional[bool] = dry_option, remove: Optional[bool] = remove_option
 ):
@@ -257,8 +275,4 @@ def prune(
 
 
 if __name__ == "__main__":
-    try:
-        app()
-    except DockSwapError as dockswap_err:
-        typer.secho(str(dockswap_err), fg=typer.colors.RED, err=True)
-        sys.exit(1)
+    app()
