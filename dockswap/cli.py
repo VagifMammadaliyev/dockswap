@@ -29,9 +29,7 @@ env_path_help = (
 dry_option = typer.Option(
     False, help="Do not run command, instead just print it"
 )
-remove_option = typer.Option(
-    False, help="Stop and remove already running containers"
-)
+remove_option = typer.Option(False, help="Remove stopped containers")
 
 repo = DockSwapRepo()
 
@@ -51,7 +49,7 @@ def version(
         False, help="output only version itself, useless if part is specified"
     ),
 ):
-    """Shows version of currently used dockswap."""
+    """Show version of currently used dockswap"""
     if not part:
         if mini:
             typer.echo(VERSION)
@@ -74,7 +72,7 @@ def add(
     path: Path = typer.Option(..., help=docker_compose_path_help),
     env_path: Optional[Path] = typer.Option(None, help=env_path_help),
 ):
-    """Register composer for project"""
+    """Register a composer for project"""
     validate_project_name(repo, project_name)
     if env_path:
         validate_path(env_path)
@@ -93,12 +91,14 @@ def add(
 
 @app.command()
 def list(full: Optional[bool] = typer.Option(False, help="show more info")):
+    """List all registered composers"""
     for i, composer in enumerate(repo.get_all(), start=1):
         typer.echo("{}. {}".format(i, composer.represent(full=full)))
 
 
 @app.command()
 def delete(project_name: str):
+    """Delete registered composer"""
     deleted = repo.delete(project_name)
     if deleted:
         typer.secho(
@@ -119,6 +119,13 @@ def delete(project_name: str):
 def stop_other_containers(
     remove: Optional[bool] = False, dry: Optional[bool] = False
 ):
+    """
+    Stop all running containers by running `docker stop ...`. If `remove` then
+    also run `docker rm ...`. If `dry` then just return command to be run.
+    If there actually no running containers then `dry` return `None` instead of empty string.
+
+    Note: `docker` command can be changed by setting `DOCKSWAP_DOCKER_CLI` environment variable.
+    """
     docker_bin = os.environ.get("DOCKSWAP_DOCKER_CLI", "docker")
     list_all_containers_command = "{} ps -aq".format(docker_bin)
     list_all_containers = subprocess.getoutput(list_all_containers_command)
@@ -128,9 +135,7 @@ def stop_other_containers(
     remove_command_dry = "{} rm {}".format(docker_bin, list_all_containers)
 
     if not list_all_containers:
-        if dry:
-            return None
-        return
+        return None
 
     if dry:
         commands = [stop_command_dry]
@@ -140,6 +145,8 @@ def stop_other_containers(
 
         return " && ".join(commands)
 
+    # TODO: This part could actually be two separate functions
+    # execute stop command
     out = subprocess.run([docker_bin, "stop"] + list_all_containers.split())
     if out.returncode != 0:
         raise DockSwapError(
@@ -147,6 +154,7 @@ def stop_other_containers(
                 stop_command_dry, out.returncode
             )
         )
+    # execute rm command
     out = subprocess.run([docker_bin, "rm"] + list_all_containers.split())
     if out.returncode != 0:
         raise DockSwapError(
@@ -187,7 +195,7 @@ def stop(
     remove_other: Optional[bool] = remove_option,
     dry: Optional[bool] = dry_option,
 ):
-    """Start containers for registered composer"""
+    """Stop containers for registered composer"""
     composer = repo.get(project_name)
 
     if remove_other and not dry:
@@ -210,6 +218,7 @@ def stop(
 def stopall(
     dry: Optional[bool] = dry_option, remove: Optional[bool] = remove_option
 ):
+    """Stop (and/or remove) all running containers"""
     command = stop_other_containers(remove=remove, dry=dry)
     if dry:
         typer.echo(command)
@@ -224,14 +233,14 @@ def stopall(
 
 @app.command()
 def prune(
-    no_input: Optional[bool] = typer.Option(
-        False, help="do not ask for confirmation"
-    )
+    input: Optional[bool] = typer.Option(True, help="ask for confirmation")
 ):
+    """Prune existing registered composers."""
+
     def success():
         typer.secho("Pruned all registered composers", fg=typer.colors.GREEN)
 
-    if no_input:
+    if not input:
         DockSwapRepo.prune()
         success()
         return
