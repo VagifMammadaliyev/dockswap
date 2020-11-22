@@ -17,7 +17,7 @@ deploy:
   provider: pypi
   distributions: sdist bdist_wheel
   username: '__token__'
-  password: $TEST_PYPI_TOKEN
+  password: $PYPI_TOKEN
   skip_existing: false
   server: $PYPI_SERVER
   skip_cleanup: true
