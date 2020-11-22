@@ -22,7 +22,6 @@ deploy:
   server: $PYPI_SERVER
   skip_cleanup: true
   on:
-    branch: staging
     repo: VagifMammadaliyev/dockswap
     python: 3.8
 
