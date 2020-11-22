@@ -62,7 +62,9 @@ To set up a working environment:
 
    Please make sure to use provided branch naming convention: :code:`{type}/{issue_number}-{short-description}`
 
-5. When you're done making changes, check that your changes pass flake8 and the
+5. By making changes you can test the script by running :code:`python -m dockswap.cli args... --options...`
+
+6. When you're done making changes, check that your changes pass flake8 and the
    tests, including testing other Python versions with tox::
 
     $ flake8 dockswap tests
@@ -71,7 +73,7 @@ To set up a working environment:
 
    To get dev dependecies run :code:`pip install -r requirements_dev.txt`
 
-6. Commit your changes and push your branch to GitHub::
+7. Commit your changes and push your branch to GitHub::
 
     $ git add .
     $ git commit -m 'Provide a short description'
@@ -79,7 +81,7 @@ To set up a working environment:
 
    Or just :code:`git commit` (without :code:`-m` part) to provide more details about commit
 
-7. Submit a pull request through the GitHub website.
+8. Submit a pull request through the GitHub website.
 
 Pull Request Guidelines
 -----------------------
