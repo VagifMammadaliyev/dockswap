@@ -169,14 +169,15 @@ def stop_other_containers(
                 stop_command_dry, out.returncode
             )
         )
-    # execute rm command
-    out = subprocess.run([docker_bin, "rm"] + list_all_containers.split())
-    if out.returncode != 0:
-        raise DockSwapError(
-            'Command "{}" exited with status code {}'.format(
-                remove_command_dry, out.returncode
+    if remove:
+        # execute rm command
+        out = subprocess.run([docker_bin, "rm"] + list_all_containers.split())
+        if out.returncode != 0:
+            raise DockSwapError(
+                'Command "{}" exited with status code {}'.format(
+                    remove_command_dry, out.returncode
+                )
             )
-        )
 
 
 @app.command()
