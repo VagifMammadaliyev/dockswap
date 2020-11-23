@@ -49,9 +49,9 @@ To set up a working environment:
 
 3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
 
-    $ mkvirtualenv dockswap
+    $ python -m venv .venv
     $ cd dockswap/
-    $ python setup.py develop
+    $ source .venv/bin/activate
 
 4. Create a branch for local development::
 
@@ -99,7 +99,6 @@ Deploying
 ---------
 
 A reminder for the maintainers on how to deploy.
-Make sure all your changes are committed (including an entry in HISTORY.rst).
 Then run::
 
 $ bump2version patch # possible: major / minor / patch
