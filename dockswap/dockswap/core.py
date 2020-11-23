@@ -192,14 +192,21 @@ class DockSwapRepo(object):
         else:
             self.commit(self.loaded_data + composers_data)
 
-    def get(self, project_name: str) -> Composer:
+    def get(self, project_name: str, silent_not_found=False) -> Composer:
         composers = self.get_all()
 
         for composer in composers:
             if composer.project_name == project_name:
                 return composer
 
-        return None
+        if silent_not_found:
+            return None
+
+        raise DockSwapError(
+            'No composer found for "{}". May be register it first?'.format(
+                project_name
+            )
+        )
 
     def delete(self, project_name: str) -> bool:
         composers = self.get_all()
