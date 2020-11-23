@@ -221,3 +221,12 @@ def test_start_composer_dry(mocker, concrete_storage):
     )
     result = run_command("start foo --dry")
     assert result.stdout == _("docker-compose --env-file env -f foo.yml up -d")
+
+
+def test_start_unexisting_composer(mocker, concrete_storage):
+    mocker.patch(
+        "dockswap.cli.repo._loaded_data",
+        concrete_storage(names=["foo"]),
+    )
+    result = run_command("start bar", 1)
+    assert "no composer" in result.stdout.lower()

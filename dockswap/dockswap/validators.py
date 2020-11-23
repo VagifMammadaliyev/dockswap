@@ -31,7 +31,7 @@ def validate_project_name(repo, name: str):
     """
     Check if project with `name` is alread registered.
     """
-    if repo.get(name):
+    if repo.get(name, silent_not_found=True):
         raise DockSwapError(
             'Composer for project "{name}" is already registered.'
             " Consider removing it first".format(name=name)
