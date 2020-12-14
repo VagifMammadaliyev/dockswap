@@ -16,7 +16,7 @@ setup_requirements = ["pytest-runner"]
 setup(
     author="Vagif Mammadaliyev",
     author_email="vagifmammadaliyev@outlook.com",
-    python_requires=">=3.5",
+    python_requires=">=3.6",
     classifiers=[
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
@@ -42,6 +42,6 @@ setup(
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/VagifMammadaliyev/dockswap",
-    version="0.2.3",
+    version="0.3.0",
     zip_safe=False,
 )

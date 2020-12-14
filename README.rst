@@ -17,6 +17,13 @@ DockSwap
 Tool for easier switching between projects that uses docker containers to set up working environment
 
 
+Installation
+~~~~~~~~~~~~
+
+.. code-block:: bash
+
+   pip install dockswap
+
 Usage
 ~~~~~
 
