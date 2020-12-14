@@ -2,7 +2,7 @@ import os
 import subprocess
 import functools
 
-from typing import Optional
+from typing import Optional, List
 from pathlib import Path
 from enum import Enum
 
@@ -26,10 +26,11 @@ docker_compose_path_help = (
 env_path_help = (
     "If your docker-compose file uses env_file then specify path for that file"
 )
-dry_option = typer.Option(
-    False, help="Do not run command, instead just print it"
-)
+dry_option = typer.Option(False, help="Do not run command, instead just print it")
 remove_option = typer.Option(False, help="Remove stopped containers")
+service_option = typer.Option(
+    None, help="Name of service to be started. Can be provided multiple times"
+)
 
 repo = DockSwapRepo()
 
@@ -68,9 +69,7 @@ def version(
         if mini:
             typer.echo(VERSION)
         else:
-            typer.echo(
-                "DockSwapping projects with v{version}".format(version=VERSION)
-            )
+            typer.echo("DockSwapping projects with v{version}".format(version=VERSION))
     else:
         if part == VersionPart.MAJOR:
             typer.echo(MAJOR)
@@ -97,9 +96,7 @@ def add(
     )
     repo.persist(composer)
     typer.secho(
-        'Successfully registered composer for project "{}"'.format(
-            project_name
-        ),
+        'Successfully registered composer for project "{}"'.format(project_name),
         fg=typer.colors.GREEN,
     )
 
@@ -117,9 +114,7 @@ def delete(project_name: str):
     deleted = repo.delete(project_name)
     if deleted:
         typer.secho(
-            'Successfully removed "{}" from registered composers'.format(
-                project_name
-            ),
+            'Successfully removed "{}" from registered composers'.format(project_name),
             fg=typer.colors.GREEN,
         )
     else:
@@ -131,9 +126,7 @@ def delete(project_name: str):
         )
 
 
-def stop_other_containers(
-    remove: Optional[bool] = False, dry: Optional[bool] = False
-):
+def stop_other_containers(remove: Optional[bool] = False, dry: Optional[bool] = False):
     """
     Stop all running containers by running `docker stop ...`. If `remove` then
     also run `docker rm ...`. If `dry` then just return command to be run.
@@ -186,13 +179,14 @@ def start(
     project_name: str,
     remove_other: Optional[bool] = remove_option,
     dry: Optional[bool] = dry_option,
+    service: Optional[List[str]] = service_option,
 ):
     """Start containers for registered composer"""
     composer = repo.get(project_name)
 
     if remove_other and not dry:
         stop_other_containers(remove=True, dry=False)
-    command = composer.start(dry=dry)
+    command = composer.start(dry=dry, only=service)
 
     if command and dry:
         if remove_other:
@@ -234,9 +228,7 @@ def stop(
 
 @app.command()
 @handle_error
-def stopall(
-    dry: Optional[bool] = dry_option, remove: Optional[bool] = remove_option
-):
+def stopall(dry: Optional[bool] = dry_option, remove: Optional[bool] = remove_option):
     """Stop (and/or remove) all running containers"""
     command = stop_other_containers(remove=remove, dry=dry)
     if dry:
@@ -251,9 +243,7 @@ def stopall(
 
 
 @app.command()
-def prune(
-    input: Optional[bool] = typer.Option(True, help="ask for confirmation")
-):
+def prune(input: Optional[bool] = typer.Option(True, help="ask for confirmation")):
     """Prune existing registered composers."""
 
     def success():
@@ -264,9 +254,7 @@ def prune(
         success()
         return
 
-    prune_yes = typer.confirm(
-        "Are you sure to prune all your registered composers?"
-    )
+    prune_yes = typer.confirm("Are you sure to prune all your registered composers?")
 
     if prune_yes:
         DockSwapRepo.prune()
