@@ -21,6 +21,7 @@ Installation
 ~~~~~~~~~~~~
 
 .. code-block:: bash
+
    pip install dockswap
 
 Usage
